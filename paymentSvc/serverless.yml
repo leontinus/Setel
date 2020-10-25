@@ -1,4 +1,4 @@
-service: orderSvc
+service: paymentSvc
 
 frameworkVersion: ">=1.21.0 <2.0.0"
 
@@ -58,45 +58,17 @@ functions:
   #-------------------------------------------------------------------------------------------------------------------------------
   # BEGIN: FUNCTIONS
   #-------------------------------------------------------------------------------------------------------------------------------
-  createOrder:
-    handler: api/order.createOrder
+  processPayment:
+    handler: api/payment.processPayment
     environment:
       STAGE: ${self:provider.stage}
-      DYNAMODB_ORDER_TABLE: ${self:custom.ddbOrderTable}
+      DYNAMODB_PAYMENT_TABLE: ${self:custom.ddbPaymentTable}
+      ORDER_UPDATE_ORDER_STATUS: orderSvc-${self:provider.stage}-updateOrderStatus
     memorySize: 128
     timeout: 60
     tags:
-      order: createOrder
+      payment: processPayment
 
-  cancelOrder:
-    handler: api/order.cancelOrder
-    environment:
-      STAGE: ${self:provider.stage}
-      DYNAMODB_ORDER_TABLE: ${self:custom.ddbOrderTable}
-    memorySize: 128
-    timeout: 60
-    tags:
-      order: cancelOrder
-  
-  checkOrder:
-    handler: api/order.checkOrder
-    environment:
-      STAGE: ${self:provider.stage}
-      DYNAMODB_ORDER_TABLE: ${self:custom.ddbOrderTable}
-    memorySize: 128
-    timeout: 60
-    tags:
-      order: checkOrder
-
-  updateOrderStatus:
-    handler: api/order.updateOrderStatus
-    environment:
-      STAGE: ${self:provider.stage}
-      DYNAMODB_ORDER_TABLE: ${self:custom.ddbOrderTable}
-    memorySize: 128
-    timeout: 60
-    tags:
-      order: updateOrderStatus
 #-------------------------------------------------------------------------------------------------------------------------------
 # END: FUNCTIONS
 #-------------------------------------------------------------------------------------------------------------------------------
